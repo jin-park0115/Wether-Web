@@ -14,27 +14,31 @@ interface WeatherData {
 }
 
 const Main = () => {
-  const API_KEY = '8005b05e7674f29a331ad30dd2d964e3';
+  const API_KEY = process.env.REACT_APP_API_KEY;
 
-  const [location, setLocation] = useState<string>('');
+  const [location, setLocation] = useState<string>("");
   const [result, setResult] = useState<WeatherData | undefined>(undefined);
 
   const searchWeather = async () => {
     try {
       const { data }: AxiosResponse<WeatherData> = await axios({
-        method: 'get',
-        url: `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`
+        method: "get",
+        url: `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`,
       });
       setResult(data);
     } catch (err) {
-      alert('일치하는 도시가 없습니다.');
+      alert("일치하는 도시가 없습니다.");
     }
   };
 
-  const handleSearch = (e: KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSearch = (
+    e:
+      | KeyboardEvent<HTMLInputElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     if (
-      (e as KeyboardEvent<HTMLInputElement>).key === 'Enter' ||
-      (e as React.MouseEvent<HTMLButtonElement, MouseEvent>).type === 'click'
+      (e as KeyboardEvent<HTMLInputElement>).key === "Enter" ||
+      (e as React.MouseEvent<HTMLButtonElement, MouseEvent>).type === "click"
     ) {
       searchWeather();
     }
@@ -42,7 +46,7 @@ const Main = () => {
 
   const convertToCelsius = (kelvinTemp: number): number => {
     return kelvinTemp - 273.15;
-  }
+  };
 
   return (
     <AppWrap>
@@ -59,15 +63,16 @@ const Main = () => {
         {result !== undefined && (
           <ResultWrap>
             <div className="city">{result.name}</div>
-            <div className="temp">현재 날씨: {Math.floor(convertToCelsius(result.main.temp))}°C</div>
+            <div className="temp">
+              현재 날씨: {Math.floor(convertToCelsius(result.main.temp))}°C
+            </div>
             <div className="sky">Weather: {result.weather[0].main}</div>
           </ResultWrap>
         )}
       </div>
     </AppWrap>
   );
-}
-
+};
 
 export default Main;
 
@@ -78,14 +83,14 @@ const AppWrap = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
-  .appContentWrap{
+  .appContentWrap {
     width: 500px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); */
   }
-  input{
+  input {
     width: 100%;
     border: none;
     outline: none;
@@ -93,7 +98,7 @@ const AppWrap = styled.div`
     font-size: 24px;
     border-radius: 10px;
   }
-  button{
+  button {
     width: 100%;
     border: none;
     outline: none;
